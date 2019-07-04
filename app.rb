@@ -165,7 +165,7 @@ class Sushi
             end
         end
 
-        bot.command :connect do |event|
+        @bot.command :connect do |event|
             channel = event.user.voice_channel
             unless channel
                 event.send_embed do |embed|
@@ -182,7 +182,7 @@ class Sushi
             end
           end
           
-          bot.command :hiphop do |event|
+        @bot.command :hiphop do |event|
             unless @connect_state
                 channel = event.user.voice_channel
                 next unless channel
@@ -191,9 +191,9 @@ class Sushi
             end
             music = "media/hiphop#{rand(1..2)}.mp3"
             event.voice.play_file(music)
-          end
+        end
 
-          bot.command :play do |event|
+        @bot.command :play do |event|
             unless @connect_state
                 event.send_embed do |embed|
                     embed.title = "botをボイスチャンネルに接続してください！"
@@ -203,13 +203,13 @@ class Sushi
             end
             p music = "media/one_ok_rock/#{rand(1..14)}.mp3"
             event.voice.play_file(music)
-          end
+        end
 
-          bot.command :stop do |event|
+        @bot.command :stop do |event|
             event.voice.stop_playing
-          end
+        end
 
-          bot.command :disconnect do |event|
+        @bot.command :disconnect do |event|
             if @connect_state
                 @bot.voices[event.server.id].destroy
                 event.send_embed do |embed|
@@ -225,8 +225,24 @@ class Sushi
                 end
                 next
             end
-          end
-        
+        end
+
+        @bot.command :volume do |event , volume|
+            unless (0 >= volume && volume <= 100) || value == nil
+                event.send_embed do |embed|
+                    embed.title = "0 ~ 100で音量を指定してください"
+                    embed.colour = 0xFF0202
+                end
+                next
+            end
+            volume.to_i
+            event.send_embed do |embed|
+                embed.title = "音量を\"#{volume}\"に調整したよ！"
+                embed.colour = 0x02FF02
+            end
+            volume *= 0.01
+            @bot.voice.volume(volume)
+        end
     end
 
     def mention_message(message)
