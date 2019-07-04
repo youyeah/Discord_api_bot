@@ -1,13 +1,17 @@
 require "discordrb"
-require "dotenv"
+require "net/http"
+require "uri"
+require "json"
+require "open-uri"
 
-CLIEND_ID = ENV['CLIEND_ID']
+CLIENT_ID = ENV['CLIENT_ID']
 TOKEN = ENV['TOKEN']
+
 class Bot
     attr_accessor :bot
 
     def initialize
-        @bot = Discordrb::Commands::CommandBot.new(client_id: CLIEND_ID, token: TOKEN, prefix: "?")
+        @bot = Discordrb::Commands::CommandBot.new(client_id: CLIENT_ID, token: TOKEN, prefix: "?")
     end
     
     def start
