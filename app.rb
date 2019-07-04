@@ -201,7 +201,7 @@ class Sushi
                 end
                 next
             end
-            music = 'media/a.mp3'
+            p music = "media/one_ok_rock/#{rand(1..14)}.mp3"
             event.voice.play_file(music)
           end
 
