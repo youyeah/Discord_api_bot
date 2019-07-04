@@ -227,21 +227,37 @@ class Sushi
             end
         end
 
-        @bot.command :volume do |event , volume|
-            unless (0 >= volume && volume <= 100) || value == nil
+        @bot.command :volumes do |event , *level|
+            unless @connect_state
+                event.send_embed do |embed|
+                    embed.title = "ボイスチャンネルに接続してないよ"
+                    embed.colour = 0xFF0202
+                end
+                next
+            end
+            level[0] == nil ? vol = nil : vol = level[0].to_i
+            if vol == nil
+                event.send_embed do |embed|
+                    embed.title = "現在の音量は\"#{event.voice.filter_volume * 100}\"だよ！"
+                    embed.colour = 0x02FF02
+                end
+                next
+            end
+            unless 0 <= vol && vol >= 100
+                event.send_embed do |embed|
+                    embed.title = "音量を\"#{vol}\"に調整したよ！"
+                    embed.colour = 0x02FF02
+                end
+                vol *= 0.01
+                event.voice.filter_volume=(vol)
+                next
+            else
                 event.send_embed do |embed|
                     embed.title = "0 ~ 100で音量を指定してください"
                     embed.colour = 0xFF0202
                 end
                 next
             end
-            volume.to_i
-            event.send_embed do |embed|
-                embed.title = "音量を\"#{volume}\"に調整したよ！"
-                embed.colour = 0x02FF02
-            end
-            volume *= 0.01
-            @bot.voice.volume(volume)
         end
     end
 
