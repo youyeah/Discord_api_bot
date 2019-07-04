@@ -19,7 +19,7 @@ class Bot
     def setting
 
         @bot.ready do
-            @bot.game = "起動中"
+            @bot.game = "うごけボイスチャンネル"
         end
     end
 end
