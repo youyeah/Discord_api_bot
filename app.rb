@@ -3,6 +3,9 @@ require "net/http"
 require "uri"
 require "json"
 require "open-uri"
+require "dotenv"
+
+Dotenv.load
 
 CLIENT_ID = ENV['CLIENT_ID']
 TOKEN = ENV['TOKEN']
@@ -18,6 +21,7 @@ class Sushi
     
     def initialize
         @bot = Discordrb::Commands::CommandBot.new(client_id: CLIENT_ID, token: TOKEN, prefix: "?")
+        @connect_state = false
     end
 
     def start
@@ -160,6 +164,68 @@ class Sushi
                 embed.colour = 0xBDFF7D
             end
         end
+
+        bot.command :connect do |event|
+            channel = event.user.voice_channel
+            unless channel
+                event.send_embed do |embed|
+                    embed.title = "ボイスチャンネルに接続してください！"
+                    embed.colour = 0xFF0202
+                end
+                next
+            end
+            bot.voice_connect(channel)
+            @connect_state = true
+            event.send_embed do |embed|
+                embed.title = "#{channel.name}に接続しました！"
+                embed.colour = 0x02FF02
+            end
+          end
+          
+          bot.command :hiphop do |event|
+            unless @connect_state
+                channel = event.user.voice_channel
+                next unless channel
+                bot.voice_connect(channel)
+                @connect_state = true
+            end
+            music = "media/hiphop#{rand(1..2)}.mp3"
+            event.voice.play_file(music)
+          end
+
+          bot.command :play do |event|
+            unless @connect_state
+                event.send_embed do |embed|
+                    embed.title = "botをボイスチャンネルに接続してください！"
+                    embed.colour = 0xFF0202
+                end
+                next
+            end
+            music = 'media/a.mp3'
+            event.voice.play_file(music)
+          end
+
+          bot.command :stop do |event|
+            event.voice.stop_playing
+          end
+
+          bot.command :disconnect do |event|
+            if @connect_state
+                @bot.voices[event.server.id].destroy
+                event.send_embed do |embed|
+                    embed.title = "またね"
+                    embed.colour = 0x02FF02
+                end
+                @connect_state = false
+                next
+            else
+                event.send_embed do |embed|
+                    embed.title = "ボイスチャンネルに接続してないよ"
+                    embed.colour = 0xFF0202
+                end
+                next
+            end
+          end
         
     end
 
@@ -206,7 +272,6 @@ class Sushi
         else
             return "札幌・東京・埼玉・大阪の中から選んでください"
         end
-        p city
         response = open("http://weather.livedoor.com/forecast/webservice/json/v1?city=#{city}")
         parse_text = JSON.parse(response.read)
         message = parse_text["location"]["city"] + "の天気の詳細です！", parse_text["description"]["text"]
@@ -266,6 +331,9 @@ class Sushi
             ["?gg","反応速度の表示"],
             ["?weather","明日の天気。さらに札幌・東京・埼玉・大阪を指定すると詳細を表示できます。"],
             ["?lol サモナーネーム","ランクを表示"],
+            ["?connect","ユーザーがいるボイスチャンネルにbotを接続します。"],
+            ["?play","I was Kingを流します。"],
+            ["?disconnect","ボイスチャンネルから切断します。"],
             ["?help","コマンド一覧"]
             ]
     end
