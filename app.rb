@@ -7,7 +7,7 @@ class Bot
     attr_accessor :bot
 
     def initialize
-        @bot = Discordrb::Commands::CommandBot.new(client_id: 590183973179621416, token: "NTkwMTgzOTczMTc5NjIxNDE2.XRzGuA.W-ARcsPUKZXwLvl-g-sN1FOm9CE", prefix: "?")
+        @bot = Discordrb::Commands::CommandBot.new(client_id: CLIEND_ID, token: TOKEN, prefix: "?")
     end
     
     def start
