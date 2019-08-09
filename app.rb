@@ -53,7 +53,7 @@ class Sushi
             event.respond(message)
         end
 
-        # 本当は応答速度を確認したかったけど、event.timestampがマイクロ秒を扱っていなかったので、断念
+        # 処理速度の確認
         @bot.command :gg do |event|
             timestamp = Time.now
             m = event.respond("ez!")
@@ -357,7 +357,8 @@ class Sushi
     end
 
     def help_message
-        message = [["メンション","このボットにメンションでメッセージを送ると、簡単な会話ができます。"],
+        message = [
+            ["メンション","このボットにメンションでメッセージを送ると、簡単な会話ができます。"],
             ["?av キーワード","avgleの検索結果３件を表示"],
             ["?time","現在の時刻を表示"],
             ["?gg","反応速度の表示"],
