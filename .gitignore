@@ -19,7 +19,7 @@ vendor/
 /doc/
 /rdoc/
 
-/media/
+media/
 .bundle
 /.bundle/
 /vendor/bundle
