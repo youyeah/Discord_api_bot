@@ -227,7 +227,7 @@ class Sushi
             end
         end
 
-        @bot.command :volumes do |event , *level|
+        @bot.command :volume do |event , *level|
             unless @connect_state
                 event.send_embed do |embed|
                     embed.title = "ボイスチャンネルに接続してないよ"
@@ -364,7 +364,8 @@ class Sushi
             ["?weather","明日の天気。さらに札幌・東京・埼玉・大阪を指定すると詳細を表示できます。"],
             ["?lol サモナーネーム","ランクを表示"],
             ["?connect","ユーザーがいるボイスチャンネルにbotを接続します。"],
-            ["?play","I was Kingを流します。"],
+            ["?play","OneOkRockの曲をランダムで流します。"],
+            ["?volume","0 ~ 100間で音量を調節します"],
             ["?disconnect","ボイスチャンネルから切断します。"],
             ["?help","コマンド一覧"]
             ]
@@ -373,26 +374,3 @@ class Sushi
 end
 
 Sushi.new.start
-
-# class Bot
-#     attr_accessor :bot
-
-#     def initialize
-#         @bot = Discordrb::Commands::CommandBot.new(client_id: CLIENT_ID, token: TOKEN, prefix: "?")
-#     end
-    
-#     def start
-#         setting
-
-#         @bot.run
-#     end
-
-#     def setting
-
-#         @bot.ready do
-#             @bot.game = "うごけボイスチャンネル"
-#         end
-#     end
-# end
-
-# Bot.new.start

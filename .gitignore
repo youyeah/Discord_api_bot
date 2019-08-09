@@ -19,6 +19,8 @@ vendor/
 /doc/
 /rdoc/
 
+/media/
+.bundle
 /.bundle/
 /vendor/bundle
 /lib/bundler/man/
